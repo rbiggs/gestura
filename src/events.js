@@ -17,40 +17,39 @@ var eventCancel
 
 // Pointer events for IE11 and MSEdge:
 if (window.navigator.pointerEnabled) {
-  eventStart = 'pointerdown';
-  eventEnd = 'pointerup';
-  eventMove = 'pointermove';
-  eventCancel = 'pointercancel';
+  eventStart = 'pointerdown'
+  eventEnd = 'pointerup'
+  eventMove = 'pointermove'
+  eventCancel = 'pointercancel'
 
-// Pointer events for IE10 and WP8:
+  // Pointer events for IE10 and WP8:
 } else if (window.navigator.msPointerEnabled) {
-  eventStart = 'MSPointerDown';
-  eventEnd = 'MSPointerUp';
-  eventMove = 'MSPointerMove';
-  eventCancel = 'MSPointerCancel';
+  eventStart = 'MSPointerDown'
+  eventEnd = 'MSPointerUp'
+  eventMove = 'MSPointerMove'
+  eventCancel = 'MSPointerCancel'
 
-// Touch events for iOS & Android:
+  // Touch events for iOS & Android:
 } else if ('ontouchstart' in window) {
-  eventStart = 'touchstart';
-  eventEnd = 'touchend';
-  eventMove = 'touchmove';
-  eventCancel = 'touchcancel';
+  eventStart = 'touchstart'
+  eventEnd = 'touchend'
+  eventMove = 'touchmove'
+  eventCancel = 'touchcancel'
 
-// Mouse events for desktop:
+  // Mouse events for desktop:
 } else {
-  eventStart = 'mousedown';
-  eventEnd = 'mouseup';
-  eventMove = 'mousemove';
-  eventCancel = 'mouseout';
+  eventStart = 'mousedown'
+  eventEnd = 'mouseup'
+  eventMove = 'mousemove'
+  eventCancel = 'mouseout'
 }
-export {eventStart, eventEnd, eventMove, eventCancel}
-
+export { eventStart, eventEnd, eventMove, eventCancel }
 
 /**
  * Fire a gesture on an element and pass it some optional data.
- * @param {Element} el 
- * @param {string} event 
- * @param {*} [data] 
+ * @param {Element} el
+ * @param {string} event
+ * @param {*} [data]
  */
 export function trigger(el, event, data) {
   if (!event) {
@@ -77,16 +76,30 @@ export var gestures = function() {
   var longTapDelay = 750
   var singleTapDelay = 150
   var gestureLength = 20
-  if (/android/img.test(navigator.userAgent)) singleTapDelay = 200
+  if (/android/gim.test(navigator.userAgent)) singleTapDelay = 200
   var longTapTimeout
 
+  /**
+   * @param {Node} node
+   */
   function parentIfText(node) {
     return 'tagName' in node ? node : node.parentNode
   }
 
+  /**
+   * @param {number} x1
+   * @param {number} x2
+   * @param {number} y1
+   * @param {number} y2
+   */
   function swipeDirection(x1, x2, y1, y2) {
-    return Math.abs(x1 - x2) >=
-      Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down')
+    return Math.abs(x1 - x2) >= Math.abs(y1 - y2)
+      ? x1 - x2 > 0
+        ? 'left'
+        : 'right'
+      : y1 - y2 > 0
+        ? 'up'
+        : 'down'
   }
 
   function longTap() {
@@ -118,7 +131,7 @@ export var gestures = function() {
   /**
    * Execute this after DOM loads:
    */
-  (function() {
+  ;(function() {
     var now
     var delta
     var body = document.body
@@ -131,7 +144,7 @@ export var gestures = function() {
       delta = now - (touch.last || now)
 
       if (eventStart === 'mousedown') {
-        touch.el = parentIfText(e.target)
+        touch.el = parentIfText(/** @type{Node} */ (e.target))
         if (e.target['nodeName'] === 'ripple') {
           touch.el = e.target['parentNode']
         }
@@ -139,9 +152,9 @@ export var gestures = function() {
         touch.x1 = e['pageX']
         touch.y1 = e['pageY']
 
-      /**
-       * Detect two or more finger gestures:
-       */
+        /**
+         * Detect two or more finger gestures:
+         */
       } else {
         if (e['touches'].length === 1) {
           if (!!e.target['disabled']) return
@@ -185,25 +198,29 @@ export var gestures = function() {
      * Capture event end:
      */
     body.addEventListener(eventEnd, function(e) {
-
       cancelLongTap()
       if (!!touch.el) {
         /**
          * Swipe detection:
          */
-        if ((touch.x2 && Math.abs(touch.x1 - touch.x2) > gestureLength) ||
-          (touch.y2 && Math.abs(touch.y1 - touch.y2) > gestureLength)) {
+        if (
+          (touch.x2 && Math.abs(touch.x1 - touch.x2) > gestureLength) ||
+          (touch.y2 && Math.abs(touch.y1 - touch.y2) > gestureLength)
+        ) {
           swipeTimeout = setTimeout(function() {
             if (touch && touch.el) {
               trigger(touch.el, 'swipe')
-              trigger(touch.el, 'swipe' + (swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)))
+              trigger(
+                touch.el,
+                'swipe' + swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)
+              )
               touch = {}
             }
           }, 0)
 
-        /**
-         * Normal tap:
-         */
+          /**
+           * Normal tap:
+           */
         } else if ('last' in touch) {
           /**
            * Delay by one tick so we can cancel the 'tap' event if 'scroll' fires:
@@ -218,7 +235,6 @@ export var gestures = function() {
                 e.preventDefault()
                 touch = {}
               }
-
             } else {
               /**
                * Trigger tap after singleTapDelay:
@@ -228,7 +244,6 @@ export var gestures = function() {
                 if (touch && touch.el && !touch.move) {
                   trigger(touch.el, 'tap')
                   touch = {}
-
                 } else {
                   /**
                    * Touch moved so cancel tap:
@@ -239,7 +254,6 @@ export var gestures = function() {
             }
           }, 0)
         }
-
       } else {
         return
       }
