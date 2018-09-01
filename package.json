@@ -1,0 +1,25 @@
+{
+  "name": "gestura",
+  "version": "1.0.0",
+  "description": "Cross-platform gesture library for desktop and mobile.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbiggs/gestura.git"
+  },
+  "keywords": [
+    "touch",
+    "gesture",
+    "tap",
+    "swipe"
+  ],
+  "author": "Robert Biggs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rbiggs/gestura/issues"
+  },
+  "homepage": "https://github.com/rbiggs/gestura#readme"
+}
