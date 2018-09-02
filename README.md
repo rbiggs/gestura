@@ -126,7 +126,7 @@ function SwipeTest() {
 }
 ```
 
-By capturing and checking the event data, you can have a single event handle different direcional swipes. 
+By capturing and checking the event data, you can have a single swipe event handle different directions. You might do that with a toggle switch. Attach a swipe gesture to it, and when the event data is `left`, turn it on, else turn it off. 
 
 
 ## Supported Libraries
