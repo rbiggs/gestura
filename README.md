@@ -1,6 +1,25 @@
 # gestura
 Cross-platform gesture library for desktop and mobile
 
+## Installation
+
+To install Gestura, use NPM:
+
+```
+npm i -D gestura
+```
+
+After that you can import it into your project. Do so on the document that will be the main part loading in the browser. Gestura needs to run after the DOM is loaded.
+
+```javascript
+import { gestures } from 'gestura'
+// Initialize the gestures:
+gestures()
+// App code here...
+```
+
+If you fail to execute `gestures()` after importing, the gestures will never get set up and will be unavailable to your code.
+
 ## Event Aliases
 
 Gestura provides normals events and gestures for desktop and mobile. To facility easier cross-platform event handle, Gestura provides the following four event aliases:
@@ -45,6 +64,8 @@ Depending on the library/framework you are using, you can use "on" gestures came
 
 ```javascript
 import { gestures } from 'gestura'
+// Initialize the gestures:
+gestures()
 
 // Define event callbacks:
 function announceTap() {
@@ -75,6 +96,8 @@ You can also use gestures with event listeners:
 
 ```javascript
 import { gestures } from 'gestura'
+// Initialize the gestures:
+gestures()
 
 const tappableBtn = document.querySelector('#tappableBtn')
 tappableBtn.addEventListener('tap', function() {
@@ -82,6 +105,178 @@ tappableBtn.addEventListener('tap', function() {
 })
 ```
 
+### About Swipe
+
+`swipe` is a more generic gesture than `swipeleft`, etc. However, if you use it, you can examine the event data to see which direction the swipe was:
+
+```javascript
+import { gestures } from 'gestura'
+// Initialize the gestures:
+gestures()
+
+function SwipeTest() {
+  function announceSwipe(e) {
+    // The swipe direction gets passed with the event
+    // as the value of the property `data`:
+    alert(`The swipe direction was: ${e.data}.`)
+  }
+  return (
+    <div onswipe={e => announceSwipe(e)}>Swipe on me!</div>
+  )
+}
+```
+
+By capturing and checking the event data, you can have a single event handle different direcional swipes. 
 
 
+## Supported Libraries
 
+Gestura should work with any library or framework that does not convert inline events into synthetic events. Be aware that some libaries expect inline events to be camel cased. Gestura has been tested with [Preact](https://preactjs.com), [Hyperapp](https://github.com/hyperapp/hyperapp), [Superfine](https://github.com/jorgebucaran/superfine), [VueJS](https://vuejs.org), [Composi](https://composor.github.io), [HyperHTML](https://viperhtml.js.org), [lit-html](https://polymer.github.io/lit-html/), [Svelte](https://svelte.technology)
+
+### Preact 
+
+```javascript
+class List extends Component {
+  render() {
+    return (
+      <p>
+        <button onTap={() => this.announce()}>Tap Here...</button>
+      </p>
+    )
+  }
+  announce(e) {
+    alert('You just tapped the button!')
+  }
+}
+```
+
+### Hyperapp
+
+```javascript
+const actions = {
+  announceTap: () => alert('You just tapped the button!')
+}
+
+const view = (state, actions) => (
+  <p>
+    <button ontap={() => actions.announceTap()} >
+      Tap Here...
+    </button>
+  </p>
+)
+
+app(null, actions, view, document.body)
+```
+
+### VueJS
+Vue expects its special syntax for inline events. Even so, you can use Gestura with Vue:
+
+HTML:
+```html
+<div id='app'>
+  <p><button v-on:swipe="announceSwipe">Swipe</button></p>
+</div>
+```
+JavaScript:
+```javascript
+new Vue({
+  el: '#app',
+  methods: {
+    announceSwipe: function(e) {
+      alert(`You swiped in this direction: ${e.data}`)
+    }
+  }
+})
+```
+
+### Svelte
+```html
+<button on:tap='set({ showModal: true })'>
+  show modal
+</button>
+```
+
+### HyperHTML
+```javascript
+let renderGesture = (name) => hyper()`<p>
+  <button ontap=${handleClick}>
+    Click me
+  </button>
+</p>`;
+
+function handleClick(e) {
+  e.preventDefault();
+  alert('You just tapped the button.');
+}
+
+hyper(document.body)`${renderGesture()}`;
+```
+
+### lit-html
+
+```javascript
+function announceTap() {
+  alert('You just tapped the button!')
+}
+
+render(html`
+  <p>
+    <button on-tap=${announceTap}>Tap Here...</button>
+  </p>
+`, document.body);
+```
+
+### Superfine 
+
+```javascript
+function GestureTest() {
+  function announceDblTap() {
+    alert('You just double tapped the button!')
+  }
+  return (
+    <p>
+      <button ondbltap={() => actions.announceDblTap()} >
+        Tap Here...
+      </button>
+    </p>
+  )
+}
+```
+
+### Composi
+```javascript
+class List extends Component {
+  render() {
+    return (
+      <p>
+        <button onlongtap={() => this.announceLongTag()}>Tap Here...</button>
+      </p>
+    )
+  }
+  announceLongTag(e) {
+    alert('You just long tapped the button!')
+  }
+}
+```
+
+### Inferno & React
+
+Because Inferno and React use synthetic events, you can't use Gestura for inline events. However, you can use Gestura with event listeners for them. You'd need to use a `ref` for the element where you want to listen for the gesture. Below is an example with Inferno. Notice how we use `ref` to get a reference to the button and then use `componentDidMount` to attach an event listener for the gesture (tap).
+
+```javascript
+class GestureTest extends Component {
+  render() {
+    return (
+      <p>
+        <button ref={element => this.tapBtn = element}>Tap</button>
+      </p>
+    );
+  }
+  componentDidMount(el) {
+    this.tapBtn.addEventListener('tap', this.announce)
+  } 
+  announce() {
+    alert('You just tapped!')
+  }
+}
+```

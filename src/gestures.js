@@ -153,7 +153,7 @@ export var gestures = function() {
         touch.y1 = e['pageY']
 
         /**
-         * Detect two or more finger gestures:
+         * Detect one finger gesture:
          */
       } else {
         if (e['touches'].length === 1) {
@@ -209,7 +209,13 @@ export var gestures = function() {
         ) {
           swipeTimeout = setTimeout(function() {
             if (touch && touch.el) {
-              trigger(touch.el, 'swipe')
+              var direction = swipeDirection(
+                touch.x1,
+                touch.x2,
+                touch.y1,
+                touch.y2
+              )
+              trigger(touch.el, 'swipe', direction)
               trigger(
                 touch.el,
                 'swipe' + swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)
@@ -246,7 +252,7 @@ export var gestures = function() {
                   touch = {}
                 } else {
                   /**
-                   * Touch moved so cancel tap:
+                   * Touch moved, so cancel tap:
                    */
                   cancelAll()
                 }
@@ -261,5 +267,3 @@ export var gestures = function() {
     body.addEventListener('touchcancel', cancelAll)
   })()
 }
-
-gestures()
