@@ -216,10 +216,7 @@ export var gestures = function() {
                 touch.y2
               )
               trigger(touch.el, 'swipe', direction)
-              trigger(
-                touch.el,
-                'swipe' + swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)
-              )
+              trigger(touch.el, 'swipe' + direction)
               touch = {}
             }
           }, 0)
