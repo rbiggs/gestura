@@ -1,6 +1,6 @@
 {
   "name": "gestura",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Cross-platform gesture library for desktop and mobile.",
   "main": "index.js",
   "jsnext:main": "./index.js",

@@ -67,6 +67,7 @@ export function trigger(el, event, data) {
 
 /**
  * Enable gestures in the browser.
+ * @return {void} undefined
  */
 export var gestures = function() {
   var touch = {}
@@ -263,4 +264,56 @@ export var gestures = function() {
     })
     body.addEventListener('touchcancel', cancelAll)
   })()
+}
+
+/**
+ * Function to disable text selection. Use with make swipe events not select the element's text.
+ * @param {Element} element
+ * @param {string | boolean} [all]
+ * @return {void} undefined
+ */
+export function disableTextSelection(element, all) {
+  if (!element) return
+  if (all && typeof element === 'string') {
+    var elements = Array.prototype.slice.call(
+      document.querySelectorAll(element)
+    )
+    elements.map(function(element) {
+      element.classList.add('disable-user-select')
+    })
+  } else {
+    if (typeof element === 'string') {
+      element = document.querySelector(element)
+      element.classList.add('disable-user-select')
+    }
+  }
+  var stylesheet = document.head.querySelector('.disable-user-select')
+  if (!stylesheet) {
+    stylesheet = document.createElement('style')
+    stylesheet.className = 'disable-user-select'
+    stylesheet.innerHTML =
+      '.disable-user-select, .disable-user-select * { user-select: none; -webkit-user-select: none; -ms-user-select: none; }'
+    document.head.appendChild(stylesheet)
+  }
+}
+
+/**
+ * Function to remove a style set to disable text selection. This will re-enable text selection.
+ * @param {Element} element
+ * @param {string | boolean} all
+ * @return {void} undefined
+ */
+export function enableTextSelection(element, all) {
+  if (all && typeof element === 'string') {
+    var elements = Array.prototype.slice.call(
+      document.querySelectorAll(element)
+    )
+    elements.map(function(element) {
+      element.classList.remove('disable-user-select')
+    })
+  } else {
+    if (typeof element === 'string') element = document.querySelector(element)
+    if (!element) return
+    element.classList.remove('disable-user-select')
+  }
 }

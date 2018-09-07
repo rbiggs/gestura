@@ -128,6 +128,58 @@ function SwipeTest() {
 
 By capturing and checking the event data, you can have a single swipe event handle different directions. You might do that with a toggle switch. Attach a swipe gesture to it, and when the event data is `left`, turn it on, else turn it off. 
 
+### Swipes and Text Selection
+
+If you register a swipe on an element and it or its children have any text, when the user tried to swipe it will result in a text selection. You can avoid this glitch by using Gestura's `disableTextSelection` function. You import it in and the pass it the element to disable text selection on. Below we show how to do this with React. We disable text selection on the button when the `componentDidMount` lifecycle hook executes:
+
+```javascript
+import { React } from 'react'
+import { gestures, disableTextSelection } from gestura
+// Initialize gestures:
+gestures()
+
+class Button extends React.Component {
+  constructor(props) {
+    super(props)
+    this.button  = React.createRef();
+  }
+  render() {
+    return (
+      <button ref={this.button} onSwipe={e => this.handleSwipe(e)}>Swipe Me!</button>
+    )
+  }
+  handleSwipe(e) {
+    // Handle the swipe here...
+  }
+  componentDidMount() {
+    // Disable text selection on the button:
+    disableTextSelection(this.button.current)
+  }
+}
+```
+
+If you wish to disable text selection on may element, say all button tags or all elements of a class, you can use the selector followed by a second truthy value:
+
+```javascript
+disableTextSelection('button', true)
+// or (any string is truthy)
+disableTextSelection('.swipable', 'all')
+```
+#### Re-enabling Text Selection
+
+If you want to later re-enable text selection on an element that you disabled, you can import and use the `enableTextSelection` function. Import it and pass it the element to enable:
+
+```javascript
+enableTextSelection('#user-list')
+```
+
+To re-enable many elements of the same type, you use it the same as `disableTextSelection` by passing in a tag selector or class, followed by a second truth value:
+
+```javascript
+enableTextSelection('button', true)
+// or (any string is truthy)
+enableTextSelection('.swipable', 'yes')
+```
 
 ## Supported Libraries
 
@@ -279,4 +331,46 @@ class GestureTest extends Component {
     alert('You just tapped!')
   }
 }
+```
+
+And here's a gesture for React:
+
+```javascript
+import { React } from 'react'
+import { ReactDOM } from 'react-dom'
+import { gestures } from 'gestura'
+
+// Initialize gestures:
+gestures()
+
+
+class Button extends React.Component {
+  constructor(props) {
+    super(props)
+    this.button  = React.createRef();
+  }
+  render() {
+    return (
+      <div>
+        <p>
+          <button ref={this.button}>Tap here...</button>
+        </p>
+      </div>
+    )
+  }
+  componentDidMount() {
+    // Use ref defined on button to attach event listener for tag gesture:
+    this.button.current.addEventListener('tap', () => this.announce())
+  }
+  announce() {
+    alert('You just tapped!')
+  }
+}
+
+ReactDOM.render(
+  <div>
+    <Button/>
+  </div>, 
+  document.body
+)
 ```
