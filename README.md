@@ -1,5 +1,6 @@
 # gestura
-Cross-platform gesture library for desktop and mobile
+
+Cross-platform gesture library for desktop and mobile. Gzipped, Gestura is only 1KB. It's smaller than most images you will use in your app.
 
 ## Installation
 
@@ -22,7 +23,7 @@ If you fail to execute `gestures()` after importing, the gestures will never get
 
 ## Event Aliases
 
-Gestura provides normals events and gestures for desktop and mobile. To facility easier cross-platform event handle, Gestura provides the following four event aliases:
+Gestura provides normalised events and custom gestures for desktop and mobile. To facility easier cross-platform event handle, Gestura provides the following four event aliases:
 
 1. eventStart
 2. eventEnd
