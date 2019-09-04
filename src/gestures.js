@@ -144,7 +144,7 @@ export var gestures = function() {
       now = Date.now()
       delta = now - (touch.last || now)
 
-      if (eventStart === 'mousedown') {
+      if (eventStart !== 'touchstart') {
         touch.el = parentIfText(/** @type{Node} */ (e.target))
         if (e.target['nodeName'] === 'ripple') {
           touch.el = e.target['parentNode']
@@ -178,7 +178,7 @@ export var gestures = function() {
      */
     body.addEventListener(eventMove, function(e) {
       cancelLongTap()
-      if (eventMove === 'mousemove') {
+      if (eventMove !== 'touchmove') {
         touch.x2 = e['pageX']
         touch.y2 = e['pageY']
       } else {

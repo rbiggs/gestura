@@ -1,6 +1,6 @@
 {
   "name": "gestura",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Cross-platform gesture library for desktop and mobile.",
   "main": "index.js",
   "jsnext:main": "./index.js",
@@ -14,9 +14,10 @@
     "build": "npm run format && npm run lint && npm run bundle && npm run minify",
     "bundle": "rollup -i index.js -o dist/gestura.js -m -f umd -n gestura",
     "format": "prettier --no-semi --single-quote --write ./src/*.js",
-    "lint": "eslint --config ./.eslintrc.json lib",
+    "lint": "eslint --config ./.eslintrc.json src/*",
     "minify": "uglifyjs dist/gestura.js -o dist/gestura.js -mc pure_funcs=['Object.defineProperty'] --source-map includeSources,url=gestura.js.map",
     "prepare": "npm run build",
+    "start": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,7 +37,7 @@
   },
   "homepage": "https://github.com/rbiggs/gestura#readme",
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "eslint": "^5.16.0",
     "prettier": "^1.11.1",
     "rollup": "^0.57.1",
     "uglify-js": "3.3.16"
