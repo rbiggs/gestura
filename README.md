@@ -1,4 +1,4 @@
-# For of gestura
+# Fork of gestura
 https://github.com/rbiggs/gestura
 
 # gestura
