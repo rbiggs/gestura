@@ -1,3 +1,6 @@
+# Fork of gestura
+https://github.com/rbiggs/gestura
+
 # gestura
 
 Cross-platform gesture library for desktop and mobile. Gzipped, Gestura is only 1KB. It's smaller than most images you will use in your app.
@@ -42,7 +45,7 @@ document.querySelector('button').addEventListener(eventEnd, (e) => {
 
 ## Gestures
 
-On mobile devices users expect to be able to tap and swipe. Gestura provides taps and swipes that work on both mobile and desktop, ensuring an consitent user experience across platforms. With Gestura you don't have to have separate events for desktop and mobile. 
+On mobile devices users expect to be able to tap and swipe. Gestura provides taps and swipes that work on both mobile and desktop, ensuring an consitent user experience across platforms. With Gestura you don't have to have separate events for desktop and mobile.
 
 Gestura provides the following gestures:
 
@@ -127,7 +130,7 @@ function SwipeTest() {
 }
 ```
 
-By capturing and checking the event data, you can have a single swipe event handle different directions. You might do that with a toggle switch. Attach a swipe gesture to it, and when the event data is `left`, turn it on, else turn it off. 
+By capturing and checking the event data, you can have a single swipe event handle different directions. You might do that with a toggle switch. Attach a swipe gesture to it, and when the event data is `left`, turn it on, else turn it off.
 
 ### Swipes and Text Selection
 
@@ -186,7 +189,7 @@ enableTextSelection('.swipable', 'yes')
 
 Gestura should work with any library or framework that does not convert inline events into synthetic events. Be aware that some libaries expect inline events to be camel cased. Gestura has been tested with [Preact](https://preactjs.com), [Hyperapp](https://github.com/hyperapp/hyperapp), [Superfine](https://github.com/jorgebucaran/superfine), [VueJS](https://vuejs.org), [Composi](https://composor.github.io), [HyperHTML](https://viperhtml.js.org), [lit-html](https://polymer.github.io/lit-html/), [Svelte](https://svelte.technology)
 
-### Preact 
+### Preact
 
 ```javascript
 class List extends Component {
@@ -279,7 +282,7 @@ render(html`
 `, document.body);
 ```
 
-### Superfine 
+### Superfine
 
 ```javascript
 function GestureTest() {
@@ -327,7 +330,7 @@ class GestureTest extends Component {
   }
   componentDidMount(el) {
     this.tapBtn.addEventListener('tap', this.announce)
-  } 
+  }
   announce() {
     alert('You just tapped!')
   }
@@ -371,7 +374,7 @@ class Button extends React.Component {
 ReactDOM.render(
   <div>
     <Button/>
-  </div>, 
+  </div>,
   document.body
 )
 ```
